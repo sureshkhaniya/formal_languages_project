@@ -1,0 +1,19 @@
+def is_in_language_L(string):
+    """
+    Check if a string belongs to language L = {a^n b^n | n >= 1}
+    
+    Args:
+        string (str): Input string to check
+    
+    Returns:
+        bool: True if string is in L, False otherwise
+    
+    Examples:
+        is_in_language_L("ab") -> True
+        is_in_language_L("aabb") -> True  
+        is_in_language_L("aaabbb") -> True
+        is_in_language_L("aba") -> False
+        is_in_language_L("") -> False
+    """
+    # Your implementation here
+    pass
