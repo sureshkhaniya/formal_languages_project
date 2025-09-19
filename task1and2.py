@@ -23,6 +23,7 @@ def is_in_language_L(string):
 
 def test_assignment():
     # Test Task 1: Language L membership
+    # Test Task 1: Language L membership
     assert is_in_language_L("ab") == True
     assert is_in_language_L("aabb") == True
     assert is_in_language_L("aaabbb") == True
@@ -31,8 +32,9 @@ def test_assignment():
     assert is_in_language_L("") == False
     assert is_in_language_L("a") == False
     assert is_in_language_L("b") == False
-test_assignment()
+
 print("All tests passed!")
+test_assignment()
 
 
 '''---------------------------------------------------------------------------------------------------------------------------------------'''
@@ -72,7 +74,7 @@ def kleene_closure_generator(base_language, max_length):
 
     return result
 
-def main():
+def main_kleene_closure():
     # ---------------- Test Cases ----------------
     
     # Example 1
@@ -85,8 +87,83 @@ def main():
     assert "" in result2, "Test 2 failed: missing empty string"
     assert "ab" in result2, "Test 2 failed: missing 'ab'"
     assert "abab" in result2, "Test 2 failed: missing 'abab'"
+    assert len([s for s in result2 if len(s) <= 4]) >= 3
 
     print("All tests passed!")
 
-main()
+main_kleene_closure()
+
+# Function to generate the nth string of the language M
+def generate_recursive_language_M(n):
+    # Base case: if n is 0, just return "x"
+    if n == 0:
+        return "x"
+    else:
+        # Recursive case: put "y" in front and "z" at the end
+        return "y" + generate_recursive_language_M(n - 1) + "z"
+    
+# Main function to test
+def main_recursive():
+    # Test cases
+    assert generate_recursive_language_M(0) == "x"
+    assert generate_recursive_language_M(1) == "yxz"
+    assert generate_recursive_language_M(2) == "yyxzz"
+    assert generate_recursive_language_M(3) == "yyyxzzz"
+
+    # If all asserts pass, print this message
+    print("All tests passed!")
+
+
+# Run the program
+main_recursive()
+
+def regex_match(pattern, string):
+    """
+    Very simple regex matcher for beginners.
+    Supports: concatenation, | (union), * (Kleene star).
+    """
+
+    # If the pattern is empty, the string must also be empty
+    if pattern == "":
+        return string == ""
+
+    # -------- Handle union (|) --------
+    if "|" in pattern:
+        # Split the pattern into two parts around |
+        left, right = pattern.split("|", 1)
+        return regex_match(left, string) or regex_match(right, string)
+
+    # -------- Handle star (*) --------
+    if len(pattern) >= 2 and pattern[1] == "*":
+        char = pattern[0]
+        # Case 1: use zero times -> skip "a*" and try rest
+        if regex_match(pattern[2:], string):
+            return True
+        # Case 2: if string starts with char, consume one and stay in pattern
+        if string != "" and string[0] == char:
+            return regex_match(pattern, string[1:])
+        return False
+
+    # -------- Handle single character / concatenation --------
+    if string != "" and pattern[0] == string[0]:
+        return regex_match(pattern[1:], string[1:])
+
+    return False
+
+
+# ----------------- Tests -----------------
+def main_regex():
+   
+    assert regex_match("a*", "") == True
+    assert regex_match("a*", "aaa") == True
+    assert regex_match("a*b", "aaab") == True
+    assert regex_match("a|b", "a") == True
+    assert regex_match("a|b", "c") == False
+    assert regex_match("ab", "ab") == True
+    assert regex_match("ab", "a") == False
+    print("All tests passed successfully!")
+
+main_regex()
+
+
 
